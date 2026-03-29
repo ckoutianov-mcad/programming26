@@ -1,10 +1,13 @@
 import { useState } from "react";
 import "./App.css";
+import { useForm } from "react-hook-form";
 import Masthead from "./Masthead/Masthead";
 import ItemCard from "./ItemCard/ItemCard";
 import { nanoid } from "nanoid";
 
 function App() {
+  const { register, handleSubmit } = useForm();
+
   //wrapping array in useState
   const [fragrances, setFragrances] = useState([
     {
@@ -67,6 +70,15 @@ function App() {
       id: "5",
     },
   ]);
+
+  function addFragranceCard(data) {
+    //-data: adds data from input-
+    // add a card, taking existing cards, and spreading a new card to it
+    console.log("data", data);
+    const newId = nanoid(6);
+    const newCard = {...data, id};
+    console.log(newCard);
+  }
   //returning array without deleted card
   function deleteCard(id) {
     console.log("delete me :(", id);
@@ -118,6 +130,17 @@ function App() {
             );
           })}
         </div>
+        {/**form */}
+        <div>
+          <form onSubmit={handleSubmit(addFragranceCard)}>
+            <div className="form-group">
+              <label>Name</label>
+              <input {...register("name", { required: true })} />
+              <button type="submit">Add Card</button>
+            </div>
+          </form>
+        </div>
+        {/**form */}
       </div>
     </>
   );
