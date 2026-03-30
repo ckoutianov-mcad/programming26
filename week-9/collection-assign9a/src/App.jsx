@@ -6,7 +6,7 @@ import ItemCard from "./ItemCard/ItemCard";
 import { nanoid } from "nanoid";
 
 function App() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: {errors} } = useForm();
 
   //wrapping array in useState
   const [fragrances, setFragrances] = useState([
@@ -72,12 +72,15 @@ function App() {
   ]);
 
   function addFragranceCard(data) {
-    //-data: adds data from input-
+    //-data: adds data from input
+    // -newcard object
     // add a card, taking existing cards, and spreading a new card to it
     console.log("data", data);
-    const newId = nanoid(6);
-    const newCard = {...data, id};
+    const newId = nanoid(5);
+    const newCard = {...data, id: newId};
     console.log(newCard);
+    //function to return fragrance
+    setFragrances([...fragrances, newCard])
   }
   //returning array without deleted card
   function deleteCard(id) {
@@ -138,6 +141,13 @@ function App() {
               <input {...register("name", { required: true })} />
               <button type="submit">Add Card</button>
             </div>
+            <div className="form-group">
+              <label htmlFor="image">Image </label>
+              <input {...register("image", {required: true})} />
+              {errors.image && (<p className="error">An image is required</p>)}
+            </div>
+
+
           </form>
         </div>
         {/**form */}
