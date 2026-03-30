@@ -1,12 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-import { useForm } from "react-hook-form";
 import Masthead from "./Masthead/Masthead";
 import ItemCard from "./ItemCard/ItemCard";
 import { nanoid } from "nanoid";
-
+import { NewCardForm } from "./NewCardForm/NewCardForm";
 function App() {
-  const { register, handleSubmit, formState: {errors} } = useForm();
 
   //wrapping array in useState
   const [fragrances, setFragrances] = useState([
@@ -73,8 +71,8 @@ function App() {
 
   function addFragranceCard(data) {
     //-data: adds data from input
-    // -newcard object
-    // add a card, taking existing cards, and spreading a new card to it
+    //-newcard: creates object
+    // add a card, taking existing cards, and spreading a new card.
     console.log("data", data);
     const newId = nanoid(5);
     const newCard = {...data, id: newId};
@@ -84,7 +82,7 @@ function App() {
   }
   //returning array without deleted card
   function deleteCard(id) {
-    console.log("delete me :(", id);
+    console.log("deleted", id);
     const updatedArray = fragrances.filter((setFragrances) => {
       return setFragrances.id !== id;
     });
@@ -92,7 +90,7 @@ function App() {
   }
   //finding matching card, and copying
   function duplicateCard(id) {
-    console.log("duplicate me :)", id);
+    console.log("duplicated", id);
     const matchingFragrance = fragrances.find((setFragrances) => {
       return setFragrances.id === id;
     });
@@ -134,22 +132,7 @@ function App() {
           })}
         </div>
         {/**form */}
-        <div>
-          <form onSubmit={handleSubmit(addFragranceCard)}>
-            <div className="form-group">
-              <label>Name</label>
-              <input {...register("name", { required: true })} />
-              <button type="submit">Add Card</button>
-            </div>
-            <div className="form-group">
-              <label htmlFor="image">Image </label>
-              <input {...register("image", {required: true})} />
-              {errors.image && (<p className="error">An image is required</p>)}
-            </div>
-
-
-          </form>
-        </div>
+       <NewCardForm addCardFn={addFragranceCard}/>
         {/**form */}
       </div>
     </>
