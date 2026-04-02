@@ -1,17 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Link, Route, Routes } from 'react-router-dom'
+import { Home } from './links/Home';
+import { Llamas } from "./links/Llamas";
+import { Alpaca } from "./links/Alpaca";
 import './App.css'
 
 function App() {
- 
 
   return (
     <>
-     hello
+      {/**Navigation */}
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/llamas">Llamas</Link></li>
+        <li><Link to="/alpacas">Alpacas</Link></li>
+      </ul>
+      {/**Routes */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/llamas" element={<Llamas />} />
+        <Route path="/alpacas" element={<Alpaca />} />
+      </Routes>
     </>
-  )
+  );
 }
 
 export default App
