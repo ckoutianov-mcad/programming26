@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import "./ItemCard.css";
 import layer from "../assets/icons/layerable.png";
 import trash from "../assets/icons/delete.png";
@@ -22,7 +23,9 @@ export default function ItemCard({
           Layerable
         </div>
       )}
-      <div className="cardTitle">{name}</div>
+      <div className="cardTitle">
+        <Link to={`${id}`}>
+        {name}</Link></div>
       <div className="cardImage">
         <img src={image} alt={name} />
       </div>
