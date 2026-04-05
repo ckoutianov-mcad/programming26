@@ -69,7 +69,7 @@ import fragranceCollection from "../assets/fragrance-data.json"
            );
          })}
        </div>
-   
+
      </div>
    );
  }
