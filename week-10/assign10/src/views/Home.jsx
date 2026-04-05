@@ -2,6 +2,8 @@
  import { nanoid } from "nanoid";
  import Masthead from "../Masthead/Masthead";
  import ItemCard from "../ItemCard/ItemCard";
+
+ import { NewCardForm } from "../NewCardForm/NewCardForm";
 import fragranceCollection from "../assets/fragrance-data.json"
 
  export function Home() {
@@ -67,6 +69,9 @@ import fragranceCollection from "../assets/fragrance-data.json"
            );
          })}
        </div>
+       {/**form */}
+       <NewCardForm addCardFn={addFragranceCard} />
+       {/**form */}
      </div>
    );
  }

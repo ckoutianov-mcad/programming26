@@ -20,6 +20,24 @@ body {
   line-height: .3;
 }
 
+.selectedFragrance {
+  padding: 30px;
+  margin: 20px;
+}
+
+.selectedFragrance img {
+  padding-bottom: 20px;
+}
+
+nav {
+  padding: 20px;
+}
+
+p {
+  text-align: left;
+}
+
+
 button {
   background-color: #c19858;
   color: #fff;
