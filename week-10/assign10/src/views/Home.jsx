@@ -69,9 +69,7 @@ import fragranceCollection from "../assets/fragrance-data.json"
            );
          })}
        </div>
-       {/**form */}
-       <NewCardForm addCardFn={addFragranceCard} />
-       {/**form */}
+   
      </div>
    );
  }
