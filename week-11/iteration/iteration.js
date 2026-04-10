@@ -29,7 +29,7 @@ drawTimer = window.setInterval(() => {
         circleY = 0;
         circleX += 50;
     }
-    if(circleY - 50 > height && circleX - 10 > width) {
+    if(circleY - 10 > height && circleX - 10 > width) {
         window.clearInterval(drawTimer);
     alert('finished');
 }
