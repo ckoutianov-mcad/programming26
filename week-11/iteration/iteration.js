@@ -9,7 +9,7 @@ const distance = 5;
 function setup() {
 createCanvas(600, 600, WEBGL);
 background(233);
-alert("Create your own art! Use your mouse to double-click. It will alert you when the canvas is finished.");
+alert("Create your own art! Use your mouse to double-click or hold. It will alert you when the canvas is finished.");
 }
 
 //control various directions and amount of 'slices' for circles
