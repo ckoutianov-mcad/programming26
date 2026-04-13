@@ -4,7 +4,7 @@ let r = 40;
 let speed = 20;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(300, 300);
 }
 
 function draw() {
@@ -34,7 +34,7 @@ function draw() {
     //field vector - replacing framecount to angle theata (th). Which is the angle of the vector in the vector field at that point.
     circle(x + vmag * cos(th), y + vmag * sin(th), 3);
     //sprial outwards
-    r += 0.001;
+    r += 0.009;
   }
   endShape();
 
