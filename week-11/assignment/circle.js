@@ -31,7 +31,7 @@ function draw() {
     // vector magnitude increase - as r spirals the vector shows more offset
     let vmag = (r - 40) / 2;
 
-    //field vector - replacing framecount to angle theata (th). Which is the angle of the vector in the vector field at that point.
+    //field vector - the angle of the vector in the vector field at that point.
     circle(x + vmag * cos(th), y + vmag * sin(th), 3);
     //sprial outwards
     r += 0.009;
