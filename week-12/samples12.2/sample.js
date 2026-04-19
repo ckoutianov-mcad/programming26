@@ -1,4 +1,4 @@
-//global var: song-mp3; sliderVolume-control of volume; sliderRate-speed of song; button- control play/pause
+//global var: song-mp3; sliderVolume-control of volume; button- control play/pause
 var song;
 var sliderVolume;
 var button;
