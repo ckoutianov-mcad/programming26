@@ -8,7 +8,7 @@ function setup() {
   colorMode(HSB);
   //create envelope
   env = new p5.Envelope();
-  env.setADSR(0.01, 0.1, 1, 0.5);
+  env.setADSR(0.01, 0.1, 1, 0.25);
   //create oscillator
   osc = new p5.Oscillator("sine");
   osc.start();
