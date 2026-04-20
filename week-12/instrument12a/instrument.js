@@ -6,10 +6,10 @@ let keys = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k']; //keys pressed
 function setup() {
   createCanvas(800, 300);
   colorMode(HSB);
-  //create envelope: harshness, start/stop. note: attack-speed of full vol, decay-speed of drop, sustain-how loud note stays, release-how long sound fades
+  //create envelope
   env = new p5.Envelope();
   env.setADSR(0.01, 0.1, 1, 0.5);
-  //create oscillator: sound maker. Sine wave for smooth sound
+  //create oscillator
   osc = new p5.Oscillator("sine");
   osc.start();
   osc.amp(env); //amplitude effected by envolope
@@ -22,7 +22,7 @@ function draw() {
   fill(0);
   textSize(15);
   textAlign(CENTER);
-  text("Press Keys on Keyboard to Play", width/2, 30);
+  text("Press your keyboard to play", width/2, 30);
 
   //keys, when pressed
   for (let i = 0; i < 8; i++) {
@@ -32,8 +32,6 @@ function draw() {
       osc.freq(midiToFreq(notes[i])); //different notes
     }
     rect(30 + i * 90, 50, 80, 80, 10); //key
-    
-
     //key letter
     fill(0);
     textSize(32);
