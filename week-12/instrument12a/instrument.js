@@ -62,7 +62,7 @@ function keyPressed() {
     }
   }
 }
-
+ //click event to enable sound
 function mousePressed() {
   if (!audioStarted){
     userStartAudio();
