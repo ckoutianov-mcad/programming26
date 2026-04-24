@@ -1,3 +1,5 @@
+let butterflies = [];
+
 //main sketch
 function setup() {
   createCanvas(500, 500);
@@ -11,6 +13,16 @@ function setup() {
         flapSpeed: random(0.005, 0.015),
       }),
     );
+  }
+}
+
+//draw the class of butterflies
+function draw() {
+  background(0);
+  
+  for (let butterfly of butterflies) {
+    butterfly.update();
+    butterfly.display();
   }
 }
 
