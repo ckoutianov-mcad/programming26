@@ -4,10 +4,37 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: aliceblue;
+    background: radial-gradient(circle,rgba(178, 115, 255, 1) 0%, rgba(60, 27, 112, 1) 50%, rgba(0, 0, 38, 1) 100%);
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 20px;
+}
+
+.slider-label {
+    color: #f4f4f4;
+    font-family: 'Courier New', Courier, monospace;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.slider-container {
+    text-align: center;
+    order: 1;
 }
 
 #sketch-holder {
+    order: 2;
     border-radius: 10px;
     box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.3); 
+}
+
+#slider-control {
+    width: 300px;
+    margin: 0 auto;
 }
