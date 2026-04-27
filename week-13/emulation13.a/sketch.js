@@ -3,7 +3,7 @@ let noOfStars = 2000; //star amount, dense galaxy
 let sizeDiff = 0.2; //amount each orbit increases than previous
 let majorAxisMinLen = 10; //size of innermost orbit, smaller=tighter
 let widthHeightRatio = 0.7; //how flat the ellipse is, 1=circle
-let rotationGradient; //how much eash ellipse rotates
+let rotationGradient; //how much each ellipse rotates
 let rotationGradientSlider; //allows interaction
 let stars = []; //each star has major/minor axislength, theta, deltatheta
 
