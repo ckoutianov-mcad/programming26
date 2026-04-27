@@ -22,7 +22,8 @@ function setup() {
 
   for (let i = 0; i < noOfStars; i++) {
     const majorAxisLen = majorAxisMinLen + i * sizeDiff;
-    stars.push(new Star(majorAxisLen));
+    const armIndex = i;//pass color index
+    stars.push(new Star(majorAxisLen, armIndex));
   }
 }
 
@@ -42,12 +43,24 @@ function draw() {
 
 class Star {
   //stars for each star
-  constructor(majorAxisLen) {
+  constructor(majorAxisLen, armIndex) {
     //each star's orbit
     this.majorAxisLen = majorAxisLen;
     this.minorAxisLen = majorAxisLen * widthHeightRatio;
     this.theta = random(2 * PI); //starting angle
     this.deltaTheta = 0.01; //change each frame
+    this.armIndex = armIndex %4;
+//4 spiral arms
+
+const armColors = [
+  { r: 100, g: 150, b: 255 }, //blue
+  { r: 255, g: 200, b: 100 }, //gold
+  { r: 200, g: 100, b: 255 }, //purple
+  { r: 255, g: 100, b: 100 }, //red
+];
+this.starR = armColors[this.armIndex].r;
+this.starG =armColors[this.armIndex].g;
+this.starB = armColors[this.armIndex].b;
   }
 
   display() {
@@ -56,7 +69,7 @@ class Star {
     const x = (this.majorAxisLen / 2) * cos(this.theta);
     const y = (this.minorAxisLen / 2) * sin(this.theta);
     noStroke();
-    fill(255, 255, 255, 100); // transparency, depth effect
+    fill(this.starR, this.starG, this.starB, 200); // transparency, depth effect
     circle(x, y, 2);
   }
 
