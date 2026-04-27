@@ -49,14 +49,15 @@ class Star {
     this.minorAxisLen = majorAxisLen * widthHeightRatio;
     this.theta = random(2 * PI); //starting angle
     this.deltaTheta = 0.01; //change each frame
-    this.armIndex = armIndex %4;
-//4 spiral arms
+    this.armIndex = armIndex %3;
+//3 spiral arms
 
+//colors
 const armColors = [
   { r: 100, g: 150, b: 255 }, //blue
   { r: 255, g: 200, b: 100 }, //gold
   { r: 200, g: 100, b: 255 }, //purple
-  { r: 255, g: 100, b: 100 }, //red
+  
 ];
 this.starR = armColors[this.armIndex].r;
 this.starG =armColors[this.armIndex].g;
@@ -69,7 +70,7 @@ this.starB = armColors[this.armIndex].b;
     const x = (this.majorAxisLen / 2) * cos(this.theta);
     const y = (this.minorAxisLen / 2) * sin(this.theta);
     noStroke();
-    fill(this.starR, this.starG, this.starB, 200); // transparency, depth effect
+    fill(this.starR, this.starG, this.starB, 200); 
     circle(x, y, 2);
   }
 
