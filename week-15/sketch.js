@@ -1,50 +1,40 @@
 //GLOBAL VARIABLES
 //audio file paths
 const moodSongs = {
-    sad: {
-        file: "songs/sad.mp3",
-        displayName: "Lacrimosa",
-        composer: "Mozart"
-    },
-    neutral: {
-        file: "songs/neutral.mp3",
-        displayName: "Waltz No. 15",
-        composer: "Brahms"
-    },
-    happy: {
-        file: "songs/happy.mp3",
-        displayName: "Air",
-        composer: "Bach"
-    }
+  sad: {
+    file: "songs/sad.mp3",
+    displayName: "Lacrimosa",
+    composer: "Mozart",
+    name: "Sad", //parameters
+    hue: 210, //blue
+    speed: 0.003,
+    amplitude: 35,
+    sat: 80,
+    bright: 85,
+  },
+  neutral: {
+    file: "songs/neutral.mp3",
+    displayName: "Waltz No. 15",
+    composer: "Brahms",
+    name: "Neutral", //parameters
+    hue: 140, //green
+    speed: 0.007,
+    amplitude: 60,
+    sat: 75,
+    bright: 85,
+  },
+  happy: {
+    file: "songs/happy.mp3",
+    displayName: "Air",
+    composer: "Bach",
+    name: "Happy", //parameters
+    hue: 55, //yellow
+    speed: 0.012,
+    amplitude: 90,
+    sat: 85,
+    bright: 90,
+  },
 };
-
-//parameters for each mood
-const moodPresets = {
-    sad: {
-        name: "Sad",
-        hue: 210, //blue
-        speed: 0.003,
-        amplitude: 35,
-        sat: 80,
-        bright: 85
-    },
-    neutral: {
-        name: "Neutral",
-        hue: 140, //green
-         speed: 0.007,
-        amplitude: 60,
-        sat: 75,
-        bright: 85
-    },
-    happy: {
-        name: "Happy",
-        hue: 55, //yellow
-         speed: 0.012,
-        amplitude: 90,
-        sat: 85,
-        bright: 90
-    }
-}
 
 //line array
 let lines = [];
@@ -52,27 +42,27 @@ let numLines = 30;
 
 //perlin noise offset
 let noiseOffset = 0;
-
 let currentMood = "neutral";
+let playPauseBtn;
 
 //SETUP
 function setup () {
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 360, 100, 100, 1);
-    //createButtons();
+    createButtons();
     for (let i = 0; i < numLines; i++) {
         lines.push({ 
             layer: i, 
             thickness: random(1.5, 3.5),
             phase: random(0, 100)
         });
-        noFill();
-    }
+    } 
+    noFill();
 }
 
 //perlin noise lines
 function drawAllLines (intensity) {
-let mood = moodPresets[currentMood];
+let mood = moodSongs[currentMood];
 
 for (let i = 0; i < lines.length; i++){
     let lineData = lines[i];
@@ -87,7 +77,7 @@ for (let i = 0; i < lines.length; i++){
     let lineHue = mood.hue;
     let lineSat = mood.sat;
     let lineBright = mood.bright;
-    let lineAlpha = 0.8;
+    let lineAlpha = 0.55;
 
     strokeWeight(lineData.thickness);
     stroke(lineHue, lineSat, lineBright, lineAlpha);
@@ -113,8 +103,8 @@ function drawWinampBackground() {
     for (let y = 0; y < height; y++) {
         let t = y/height;
         let hue = 240;
-        let sat = 30 + (1 - t) * 20;
-        let bright = 5 + (1 - t) * 8;
+        let sat = 40;
+        let bright = 8 + (t * 25);
 
         if(y % 2 === 0) {
             bright *=0.85;
@@ -126,72 +116,86 @@ function drawWinampBackground() {
     blendMode(MULTIPLY);
     fill(0, 0, 0, 0.15);
     noStroke();
-    ellipse(width/2, height/2, width * 0.8, height * 0.8);
+    ellipse(width/2, height/2, width * 0.9, height * 0.9);
     pop();
 }
 
 //draw loop
 function draw() {
   drawWinampBackground(); //gradient function
-  noiseOffset += moodPresets[currentMood].speed;
-  drawAllLines(0.5);
+  noiseOffset += moodSongs[currentMood].speed;
+  drawAllLines(0.6);
+// debug
+  fill(255);
+  noStroke();
+  textAlign(LEFT, TOP);
+  textSize(12);
+  text("TESTING", 10, 20);
 }
 
-// function createButtons() {
-//     let menu = createDiv('');
-//     menu.style('position', 'fixed');
-//     menu.style('bottom', '80px');
-//     menu.style('left', '0');
-//     menu.style('right', '0');
-//     menu.style('display', 'flex');
-//     menu.style('justify-content', 'center');
-//     menu.style('gap', '15px');
-//     menu.style('z-index', '100');
+//AUDIO FUNCTIONALITY
+function loadAndPlayMood(mood) {
+    console.log("Loading mood: ", mood);
+}
+
+function togglePlayPause() {
+    console.log("Play/Pause toggled");
+}
+
+function createButtons() {
+    let menu = createDiv('');
+    menu.style('position', 'fixed');
+    menu.style('bottom', '80px');
+    menu.style('left', '0');
+    menu.style('right', '0');
+    menu.style('display', 'flex');
+    menu.style('justify-content', 'center');
+    menu.style('gap', '15px');
+    menu.style('z-index', '100');
     
-//     let moods = ['sad', 'neutral', 'happy'];
+    let moods = ['sad', 'neutral', 'happy'];
     
-//     for (let i = 0; i < moods.length; i++) {
-//         let mood = moods[i];
-//         let data = moodPresets[mood];
-//         let track = moodSongs[mood];
+    for (let i = 0; i < moods.length; i++) {
+        let mood = moods[i];
+        let moodData = moodSongs[mood];
         
-//         // Button text: Mood name + composer
-//         let btnText = data.name + "\n" + track.composer;//new line
-//         let btn = createButton(btnText);
-//         btn.parent(menu);
-//         btn.style('padding', '10px 18px');
-//         btn.style('border-radius', '10px');
-//         btn.style('border', 'none');
-//         btn.style('cursor', 'pointer');
-//         btn.style('font-size', '14px');
-//         btn.style('font-weight', 'bold');
-//         btn.style('color', 'white');
-//         btn.style('line-height', '1.3');
-//         btn.style('white-space', 'pre-line');
+        // Button text: Mood name + composer
+        let btnText = moodData.name + "\n" + moodData.composer;//new line
+        let btn = createButton(btnText);
+        btn.parent(menu);
+        btn.style('padding', '10px 18px');
+        btn.style('border-radius', '10px');
+        btn.style('border', 'none');
+        btn.style('cursor', 'pointer');
+        btn.style('font-size', '14px');
+        btn.style('font-weight', 'bold');
+        btn.style('color', 'white');
+        btn.style('line-height', '1.3');
+        btn.style('white-space', 'pre-line');
         
-//         // Button colors
-//         if (mood === 'sad') btn.style('background', '#2752b0');
-//         else if (mood === 'neutral') btn.style('background', '#246338');
-//         else btn.style('background', '#bf9b39');
+        // Button colors
+        if (mood === 'sad') btn.style('background', '#2752b0');
+        else if (mood === 'neutral') btn.style('background', '#246338');
+        else btn.style('background', '#bf9b39');
         
-//         btn.mousePressed(function() {
-//             loadAndPlayMood(mood);
-//         });
-//     }
+        btn.mousePressed(function() {
+            loadAndPlayMood(mood);
+        });
+    }
     
-//     playPauseBtn = createButton('Play');
-//     playPauseBtn.parent(menu);
-//     playPauseBtn.style('padding', '10px 24px');
-//     playPauseBtn.style('border-radius', '10px');
-//     playPauseBtn.style('border', 'none');
-//     playPauseBtn.style('background', '#2c3e50');
-//     playPauseBtn.style('color', '#00ff88');
-//     playPauseBtn.style('cursor', 'pointer');
-//     playPauseBtn.style('font-size', '14px');
-//     playPauseBtn.style('font-weight', 'bold');
+    playPauseBtn = createButton('Play');
+    playPauseBtn.parent(menu);
+    playPauseBtn.style('padding', '10px 24px');
+    playPauseBtn.style('border-radius', '10px');
+    playPauseBtn.style('border', 'none');
+    playPauseBtn.style('background', '#2c3e50');
+    playPauseBtn.style('color', '#00ff88');
+    playPauseBtn.style('cursor', 'pointer');
+    playPauseBtn.style('font-size', '14px');
+    playPauseBtn.style('font-weight', 'bold');
     
-//     playPauseBtn.mousePressed(togglePlayPause);
-// }
+    playPauseBtn.mousePressed(togglePlayPause);
+}
 
 
 
