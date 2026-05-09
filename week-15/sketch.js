@@ -16,6 +16,21 @@ const moodSongs = {
     }
 };
 
+const moodPresets = {
+    sad: {
+        name: "Sad",
+        hue: 210, //blue
+    },
+    neutral: {
+        name: "Neutral",
+        hue: 140, //green
+    },
+    happy: {
+        name: "Happy",
+        hue: 55, //yellow
+    }
+}
+
 function setup () {
     createCanvas(windowWidth, widowHeight);
 
