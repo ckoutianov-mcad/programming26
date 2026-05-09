@@ -44,11 +44,21 @@ const moodPresets = {
     }
 }
 
+let lines = [];
+let numLines = 30;
+
 function setup () {
     createCanvas(windowWidth, windowHeight);
-
     colorMode(HSB, 360, 100, 100, 1);
     createButtons();
+    for (let i = 0; i < numLines; i++) {
+        lines.push({ layer: 1, thickness: random(1, 3)});
+    }
+}
+
+//Perlin Noise Lines
+function drawAllLines () {
+
 }
 
 function draw() {
@@ -86,10 +96,10 @@ function createButtons() {
         let btn = createButton(btnText);
         btn.parent(menu);
         btn.style('padding', '10px 18px');
-        btn.style('border-radius', '30px');
+        btn.style('border-radius', '10px');
         btn.style('border', 'none');
         btn.style('cursor', 'pointer');
-        btn.style('font-size', '12px');
+        btn.style('font-size', '14px');
         btn.style('font-weight', 'bold');
         btn.style('color', 'white');
         btn.style('line-height', '1.3');
@@ -108,7 +118,7 @@ function createButtons() {
     playPauseBtn = createButton('Play');
     playPauseBtn.parent(menu);
     playPauseBtn.style('padding', '10px 24px');
-    playPauseBtn.style('border-radius', '30px');
+    playPauseBtn.style('border-radius', '10px');
     playPauseBtn.style('border', 'none');
     playPauseBtn.style('background', '#2c3e50');
     playPauseBtn.style('color', '#00ff88');
