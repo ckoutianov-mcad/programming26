@@ -57,8 +57,41 @@ function setup () {
 }
 
 //Perlin Noise Lines
-function drawAllLines () {
+function drawAllLines (instensity) {
+let mood = moodPresets[currentMood];
 
+for (let i = 0; i < lines.length; i++){
+    let lineData = lines[i];
+    let layer = lineData.layer;
+
+    //y position spread
+    let yPos = map(layer, 0, numLines, height * 0.2, height * 0.8);
+
+    beginShape();
+
+    //line color using HSB
+    let lineHue = mood.hue;
+    let lineSat = mood.sat;
+    let lineBright = mood.bright + intensity * 10;
+    let lineAlpha = 0.7 + intensity * 0.2;
+
+    strokeWeight(lineData.thickness);
+    stroke(lineHue, lineSat, lineBright, lineAlpha);
+
+    for (let x = 0; x <= width; x +=22) {
+        let noiseVal = noise (
+            x * 0.007, noiseOffset * 0.8 + layer * 0.1 + lineData.phase * 0.005);
+
+            let maxWave = mood.amplitude;
+            let waveOffset = map(noiseVal, 0, 1, -maxWave, maxWave);
+            let finalY = yPos + (waveOffset * instensity);
+            let sineMod = sin(frameCount * 0.02 + layer*0.5) * 3;
+
+            finalY += sineMod;
+            vertex(x, finalY);
+        }
+        endShape();
+    }
 }
 
 function draw() {
