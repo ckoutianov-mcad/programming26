@@ -21,7 +21,7 @@ const moodPresets = {
     sad: {
         name: "Sad",
         hue: 210, //blue
-        speed: 0.003;
+        speed: 0.003,
         amplitude: 35,
         sat: 80,
         bright: 85
@@ -29,7 +29,7 @@ const moodPresets = {
     neutral: {
         name: "Neutral",
         hue: 140, //green
-         speed: 0.007;
+         speed: 0.007,
         amplitude: 60,
         sat: 75,
         bright: 85
@@ -37,7 +37,7 @@ const moodPresets = {
     happy: {
         name: "Happy",
         hue: 55, //yellow
-         speed: 0.012;
+         speed: 0.012,
         amplitude: 90,
         sat: 85,
         bright: 90
@@ -46,6 +46,7 @@ const moodPresets = {
 
 function setup () {
     createCanvas(windowWidth, windowHeight);
+
     colorMode(HSB, 360, 100, 100, 1);
 }
 
