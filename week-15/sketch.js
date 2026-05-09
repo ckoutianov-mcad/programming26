@@ -16,23 +16,36 @@ const moodSongs = {
     }
 };
 
+//parameters for each mood
 const moodPresets = {
     sad: {
         name: "Sad",
         hue: 210, //blue
+        speed: 0.003;
+        amplitude: 35,
+        sat: 80,
+        bright: 85
     },
     neutral: {
         name: "Neutral",
         hue: 140, //green
+         speed: 0.007;
+        amplitude: 60,
+        sat: 75,
+        bright: 85
     },
     happy: {
         name: "Happy",
         hue: 55, //yellow
+         speed: 0.012;
+        amplitude: 90,
+        sat: 85,
+        bright: 90
     }
 }
 
 function setup () {
-    createCanvas(windowWidth, widowHeight);
+    createCanvas(windowWidth, windowHeight);
 
     colorMode(HSB, 360, 100, 100, 1);
 }
@@ -53,7 +66,7 @@ function createButtons() {
     for(let i = 0; i < moods.length; i++) {
         let mood = moods[i];
         let data = moodPresets[mood];
-        let displayName = moodSongs[mood];
+        let track = moodSongs[mood];
         
         let btnText = data.name + track.composer;
         let btn = createButton(btnText);
@@ -65,6 +78,34 @@ function createButtons() {
 
         btn.mousePressed(function() {loadAndPlayMood(mood);
         });
-
     }
+
+    playPauseBtn = createButton('Play');
+    playPauseBtn.parent(menu);
+    playPauseBtn.style('padding', '10px 24px');
+    playPauseBtn.style('border-radius', '30px');
+    playPauseBtn.style('border', 'none');
+    playPauseBtn.style('background', '#000000');
+    playPauseBtn.style('color', '#00ff88');
+    playPauseBtn.style('font-size', '14px');
+    playPauseBtn.style('font-weight', 'bold');
+
+    playPauseBtn.mousePressed(togglePlayPause);
+}
+
+function drawWinampBackground() {
+    for (let y = 0; y < height; y++) {
+        let t = y/height;
+        let hue = 240; //blue
+        let sat = 30 + (1 - t) * 20; //30-50% saturation
+        let bright = 5 + (1 - t) * 8; // 5-13% brightness (very dark)
+        stroke(hue, sat, bright);
+        line(0, y, width, y);
+    }
+    push();
+    blendMode(MULTIPLY);
+    fill(0, 0, 0, 0.15);
+    noStroke();
+    ellipse(width/2, height/2, width * 0.8, height * 0.8);
+    pop();
 }
