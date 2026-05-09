@@ -97,7 +97,7 @@ function createButtons() {
         
         // Button colors
         if (mood === 'sad') btn.style('background', '#2752b0');
-        else if (mood === 'neutral') btn.style('background', '#2d623e');
+        else if (mood === 'neutral') btn.style('background', '#246338');
         else btn.style('background', '#bf9b39');
         
         btn.mousePressed(function() {
