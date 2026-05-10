@@ -1,5 +1,5 @@
 //GLOBAL VARIABLES
-//audio file paths
+//audio file paths and presets(parameters)
 const moodSongs = {
   sad: {
     file: "songs/sad.mp3",
@@ -148,25 +148,26 @@ function drawWinampBackground() {
     pop();
 }
 
-//draw loop
+//draw - updates background, measures volume, draws flowing lines 
 function draw() {
-  drawWinampBackground(); //gradient function
+  drawWinampBackground(); //dark background
 
-  //current volume
+  //measure current volume (0=no vol. - 1=max vol)
   let volume = 0;
   if (amp && currentSong && isPlaying) {
-    volume = amp.getLevel();
+    volume = amp.getLevel();//get vol from p5.Amplitude
   }
 
-  //map vol to instensity (0.2 min, up to 1.0); mult by 3 to make sensitive
+  //map vol to visual instensity: higher intensity = bigger waves
   let intensity = constrain(volume * 8, 0.6, 1.0);
 
-//update perlin noise offset
+  //update perlin noise offset: sad=slow, neutral=medium, happy=fast
   noiseOffset += moodSongs[currentMood].speed;
-//draw lines with reactive intensity
+
+  //draw perlin noise lines: waves react to intensity
   drawAllLines(intensity);
 
-// debug
+//current track name
   fill(255);
   noStroke();
   textAlign(LEFT, TOP);
@@ -174,6 +175,14 @@ function draw() {
   text(moodSongs[currentMood].displayName, 10, 20);
 }
 
+//display of current track
+function updateNowPlaying(mood) {
+let nowPlayingSpan = select('#nowPlayingText');
+if (nowPlayingSpan) {
+    let moodData = moodSongs[mood];
+    nowPlayingSpan.html("NOW PLAYING: " + moodData.displayName + " - " + moodData.composer);
+}
+}
 //AUDIO FUNCTIONALITY
 function loadAndPlayMood(mood) {
     console.log("Loading: ", mood);
@@ -182,16 +191,21 @@ function loadAndPlayMood(mood) {
         currentSong.stop();
     }
 
-
 let songPath = moodSongs[mood].file;
 
 currentSong = loadSound(
     songPath,
     function() {
         console.log("Loaded successfully: " + mood);
+        currentSong.setVolume(0.7);
+        userStartAudio();
         currentSong.loop();
         isPlaying = true;
         currentMood = mood;
+
+        //update now playing text
+        updateNowPlaying(mood);
+
         if (amp) amp.setInput(currentSong);
         if (playPauseBtn) playPauseBtn.html('Pause'); 
     },
@@ -221,6 +235,7 @@ function togglePlayPause() {
     }
 }
 
+//USER INTERFACE - CONTROLS
 function createButtons() {
     let menu = createDiv('');
     menu.style('position', 'fixed');
@@ -231,6 +246,8 @@ function createButtons() {
     menu.style('justify-content', 'center');
     menu.style('gap', '15px');
     menu.style('z-index', '100');
+    menu.style('flex-wrap', 'wrap'); //button wrap
+    menu.style('padding', '10px');
     
     let moods = ['sad', 'neutral', 'happy'];
     
@@ -361,9 +378,6 @@ function createTrackControl() {
     }
   });
 }
-
-
-
 
 //responsive canvas
 function windowResized() {
