@@ -47,7 +47,9 @@ let playPauseBtn;
 
 //SETUP
 function setup () {
-    createCanvas(windowWidth, windowHeight);
+    //winamp container
+    let canvas = createCanvas(windowWidth * 0.8, 400);
+    canvas.parent('visualizerScreen');
     colorMode(HSB, 360, 100, 100, 1);
     createButtons();
     for (let i = 0; i < numLines; i++) {
@@ -197,5 +199,12 @@ function createButtons() {
     playPauseBtn.mousePressed(togglePlayPause);
 }
 
+
+//responsive canvas
+function windowResized() {
+    let container = select('#visualizerScreen');
+    let newWidth = min(windowWidth * 0.8, 1000);
+    resizeCanvas(newWidth, 400);
+}
 
 

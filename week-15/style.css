@@ -6,5 +6,21 @@
 
 body {
     background: #0a0a0f;
-    
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    padding: 20px;
 }
+
+/* winamp container*/
+.winamp-container {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e22 100%);
+    border-radius: 8px 8px 6px 6px;
+    box-shadow: 8 8px 20px rgba(255, 255, 255, 0.08);
+    border: 1px solid #3d3d45;
+    padding: 4px 6px 8px 6px;
+}
+
+/* title bar */
