@@ -88,15 +88,15 @@ for (let i = 0; i < lines.length; i++){
     let yPos = map(layer, 0, numLines, height * 0.2, height * 0.8);
 
     beginShape();
-
     //line color - brightness and alpha react to music intensity
     let lineHue = mood.hue;
     let lineSat = mood.sat;
-    let lineBright = mood.bright + (intensity * 15);
-    let lineAlpha = 0.55 + (intensity * 0.3);
+    let lineBright = 75;
 
-    strokeWeight(lineData.thickness);
-    stroke(lineHue, lineSat, lineBright, lineAlpha);
+    let lineWidth = map(lineData.thickness, 1.5, 3.5, 1.0, 1.8);
+    strokeWeight(lineWidth);
+
+    stroke(lineHue, lineSat, lineBright);
 
     for (let x = 0; x <= width; x +=22) {
         let noiseVal = noise (
@@ -106,9 +106,6 @@ for (let i = 0; i < lines.length; i++){
             //wave size increased w/ music intensity
             let waveOffset = map(noiseVal, 0, 1, -maxWave, maxWave);
             let finalY = yPos + waveOffset;
-            let sineMod = sin(frameCount * 0.02 + layer * 0.5) * 3;
-
-            finalY += sineMod;
             vertex(x, finalY);
         }
         endShape();
@@ -131,9 +128,14 @@ function drawWinampBackground() {
     }
 
     //vignette
-    push();
     blendMode(MULTIPLY);
-    fill(0, 0, 0, 0.15);
+    fill(0, 0, 0, 0.3);
+    rect(0, 0, width, height);
+    blendMode(BLEND);
+    
+    push();
+    blendMode(DIFFERENCE);
+    noFill();
     noStroke();
     ellipse(width/2, height/2, width * 0.9, height * 0.9);
     pop();
@@ -150,7 +152,7 @@ function draw() {
   }
 
   //map vol to instensity (0.2 min, up to 1.0); mult by 3 to make sensitive
-  let intensity = constrain(volume * 3, 0.2, 1.0);
+  let intensity = constrain(volume * 5, 0.2, 1.0);
 
 //update perlin noise offset
   noiseOffset += moodSongs[currentMood].speed;
@@ -194,7 +196,7 @@ currentSong = loadSound(
 
 function togglePlayPause() {
     if (!currentSong) {
-        console.log("No song loaded. Click a mood button first");
+        console.log("Click a mood button first");
         return;
     }
 
@@ -266,7 +268,6 @@ function createButtons() {
     
     playPauseBtn.mousePressed(togglePlayPause);
 }
-
 
 //responsive canvas
 function windowResized() {

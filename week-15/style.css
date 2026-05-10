@@ -11,7 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: monospace;
-    padding: 40px;
+    padding: 20px;
 }
 
 /* winamp container*/
@@ -19,7 +19,7 @@ body {
     background: #d6d6ce;
     border-radius: 8px 8px 6px 6px;
     box-shadow: 8 8px 20px rgba(255, 255, 255, 0.08);
-    border: 20px outset #505050;
+    border: 10px outset #e6ecf4;
     padding: 4px 6px 8px 6px;
 }
 
@@ -93,25 +93,12 @@ body {
     align-items: center;
 }
 .winamp-status-text {
-    color: #00cc66;
+    color: #06150e;
     font-size: 9px;
     font-family: monospace;
     letter-spacing: 0.5px;
 }
 
-.winamp-status-led {
-    width: 8px;
-    height: 8px;
-    background: #00ff88;
-    border-radius: 50%;
-    box-shadow: 0 0 4px #00ff88;
-    animation: blink 1.5s step-start infinite;
-}
-
-@keyframes blink {
-    0% 100% { opacity: 1;}
-    50% { opacity: 0.3;}
-}
 
 /* responsive - for smaller screens */
 @media (max-width: 600px) {
