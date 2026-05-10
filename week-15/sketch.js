@@ -167,12 +167,8 @@ function draw() {
   //draw perlin noise lines: waves react to intensity
   drawAllLines(intensity);
 
-//current track name
-  fill(255);
-  noStroke();
-  textAlign(LEFT, TOP);
-  textSize(12);
-  text(moodSongs[currentMood].displayName, 10, 20);
+  //track display
+  updateTrackDisplay();
 }
 
 //display of current track
@@ -181,7 +177,7 @@ let nowPlayingSpan = select('#nowPlayingText');
 if (nowPlayingSpan) {
     let moodData = moodSongs[mood];
     nowPlayingSpan.html("NOW PLAYING: " + moodData.displayName + " - " + moodData.composer);
-}
+} 
 }
 //AUDIO FUNCTIONALITY
 function loadAndPlayMood(mood) {
@@ -232,6 +228,33 @@ function togglePlayPause() {
         isPlaying = true;
         playPauseBtn.html("Pause");
         console.log("Playing");
+    }
+}
+
+function updateTrackDisplay() {
+    if (!currentSong || !currentSong.isLoaded() || trackSliderUpdating)
+        return;
+    let duration = currentSong.duration();
+    let currentTime = currentSong.currentTime();
+
+    if (duration > 0 && currentTime >=0) {
+        //update slider position
+        let percent = (currentTime / duration) * 100;
+        trackSlider.value(percent);
+
+        //format
+        let currentMin = floor(currentTime / 60);
+        let currentSec = floor(currentTime % 60);
+        let totalMin = floor(duration / 60);
+        let totalSec = floor(duration % 60);
+
+        //time string, number format
+        let timeStr = currentMin + ":" + nf(currentSec, 2) + "/" + totalMin + ":" + nf(totalSec, 2);
+
+        //update display
+        if(window.timeDisplay) {
+            window.timeDisplay.html(timeStr);
+        }
     }
 }
 
