@@ -5,27 +5,28 @@
 }
 
 body {
-    background: #0a0a0f;
+    background: #3366ae;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: monospace;
-    padding: 20px;
+    padding: 40px;
 }
 
 /* winamp container*/
 .winamp-container {
-    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e22 100%);
+    background: #d6d6ce;
     border-radius: 8px 8px 6px 6px;
     box-shadow: 8 8px 20px rgba(255, 255, 255, 0.08);
-    border: 1px solid #3d3d45;
+    border: 20px outset #505050;
     padding: 4px 6px 8px 6px;
 }
 
 /* title bar */
-.winamp-title {
-    background: liner-gradient(90deg, #003c7a 0%, #1a5daa 100%);
+.winamp-titlebar {
+    background: linear-gradient(90deg, #002070 0%, #2a60c0 100%);
+    color: #f0f0f0;
     padding: 6px 10px;
     border-radius: 6px 6px 0 0;
     display: flex;
@@ -81,11 +82,12 @@ body {
 
 /* bottom status bar */
 .winamp-statusbar {
-    background: #232328;
+    background: #d6d6ce;
     border-radius: 3px;
     padding: 5px 10px;
     margin-top: 6px;
-    border: 1px solid #3a3a40;
+    border: 1px solid #808080;
+    color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,7 +108,7 @@ body {
     animation: blink 1.5s step-start infinite;
 }
 
-@keyframe blink {
+@keyframes blink {
     0% 100% { opacity: 1;}
     50% { opacity: 0.3;}
 }

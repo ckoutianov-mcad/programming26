@@ -40,10 +40,16 @@ const moodSongs = {
 let lines = [];
 let numLines = 30;
 
+//audio
+let currentSong = null;
+let amp = null;
+let isPlaying = false;
+let playPauseBtn;
+
 //perlin noise offset
 let noiseOffset = 0;
 let currentMood = "neutral";
-let playPauseBtn;
+
 
 //SETUP
 function setup () {
@@ -51,7 +57,15 @@ function setup () {
     let canvas = createCanvas(windowWidth * 0.8, 400);
     canvas.parent('visualizerScreen');
     colorMode(HSB, 360, 100, 100, 1);
+
+    //audio
+    amp = new p5.Amplitude();
+    amp.setInput(); //connect when song loads
+
+    //user interaction
     createButtons();
+
+    //line objects
     for (let i = 0; i < numLines; i++) {
         lines.push({ 
             layer: i, 
@@ -75,11 +89,11 @@ for (let i = 0; i < lines.length; i++){
 
     beginShape();
 
-    //line color using HSB and thickness
+    //line color - brightness and alpha react to music intensity
     let lineHue = mood.hue;
     let lineSat = mood.sat;
-    let lineBright = mood.bright;
-    let lineAlpha = 0.55;
+    let lineBright = mood.bright + (intensity * 15);
+    let lineAlpha = 0.55 + (intensity * 0.3);
 
     strokeWeight(lineData.thickness);
     stroke(lineHue, lineSat, lineBright, lineAlpha);
@@ -89,6 +103,7 @@ for (let i = 0; i < lines.length; i++){
             x * 0.007, noiseOffset * 0.8 + layer * 0.1 + lineData.phase * 0.005);
 
             let maxWave = mood.amplitude;
+            //wave size increased w/ music intensity
             let waveOffset = map(noiseVal, 0, 1, -maxWave, maxWave);
             let finalY = yPos + waveOffset;
             let sineMod = sin(frameCount * 0.02 + layer * 0.5) * 3;
@@ -114,6 +129,8 @@ function drawWinampBackground() {
         stroke(hue, sat, bright);
         line(0, y, width, y);
     }
+
+    //vignette
     push();
     blendMode(MULTIPLY);
     fill(0, 0, 0, 0.15);
@@ -125,8 +142,21 @@ function drawWinampBackground() {
 //draw loop
 function draw() {
   drawWinampBackground(); //gradient function
+
+  //current volume
+  let volume = 0;
+  if (amp && currentSong && isPlaying) {
+    volume = amp.getLevel();
+  }
+
+  //map vol to instensity (0.2 min, up to 1.0); mult by 3 to make sensitive
+  let intensity = constrain(volume * 3, 0.2, 1.0);
+
+//update perlin noise offset
   noiseOffset += moodSongs[currentMood].speed;
-  drawAllLines(0.6);
+//draw lines with reactive intensity
+  drawAllLines(intensity);
+
 // debug
   fill(255);
   noStroke();
@@ -137,11 +167,49 @@ function draw() {
 
 //AUDIO FUNCTIONALITY
 function loadAndPlayMood(mood) {
-    console.log("Loading mood: ", mood);
+    console.log("Loading: ", mood);
+
+    if(currentSong && isPlaying) {
+        currentSong.stop();
+    }
+
+
+let songPath = moodSongs[mood].file;
+
+currentSong = loadSound(
+    songPath,
+    function() {
+        console.log("Loaded successfully: " + mood);
+        currentSong.loop();
+        isPlaying = true;
+        currentMood = mood;
+        if (amp) amp.setInput(currentSong);
+        if (playPauseBtn) playPauseBtn.html('Pause'); 
+    },
+    function(err) {
+        console.error("Failed to load: " + songPath);
+    }
+);
 }
 
 function togglePlayPause() {
-    console.log("Play/Pause toggled");
+    if (!currentSong) {
+        console.log("No song loaded. Click a mood button first");
+        return;
+    }
+
+    if (isPlaying) {
+        currentSong.pause();
+        isPlaying = false;
+        playPauseBtn.html('Play');
+        console.log("Paused");
+    } else {
+        userStartAudio();
+        currentSong.loop();
+        isPlaying = true;
+        playPauseBtn.html("Pause");
+        console.log("Playing");
+    }
 }
 
 function createButtons() {
@@ -185,7 +253,7 @@ function createButtons() {
         });
     }
     
-    playPauseBtn = createButton('Play');
+    playPauseBtn = createButton('Pause');
     playPauseBtn.parent(menu);
     playPauseBtn.style('padding', '10px 24px');
     playPauseBtn.style('border-radius', '10px');
