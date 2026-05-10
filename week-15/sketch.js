@@ -44,12 +44,16 @@ let numLines = 30;
 let currentSong = null;
 let amp = null;
 let isPlaying = false;
-let playPauseBtn;
+let currentMood = "neutral";
 
 //perlin noise offset
 let noiseOffset = 0;
-let currentMood = "neutral";
 
+//user interaction
+let playPauseBtn = null;
+let volumeSlider = null;
+let trackSlider = null;
+let trackSliderUpdating = false;
 
 //SETUP
 function setup () {
@@ -64,6 +68,8 @@ function setup () {
 
     //user interaction
     createButtons();
+    createVolumeControl();
+    createTrackControl();
 
     //line objects
     for (let i = 0; i < numLines; i++) {
@@ -74,6 +80,7 @@ function setup () {
         });
     } 
     noFill();
+    console.log("Mood Visualizer ready. Click a buttont to start");
 }
 
 //perlin noise lines
@@ -104,7 +111,7 @@ for (let i = 0; i < lines.length; i++){
 
             let maxWave = mood.amplitude;
             //wave size increased w/ music intensity
-            let waveOffset = map(noiseVal, 0, 1, -maxWave, maxWave);
+            let waveOffset = map(noiseVal, 0, 1, -maxWave * intensity, maxWave * intensity);
             let finalY = yPos + waveOffset;
             vertex(x, finalY);
         }
@@ -152,7 +159,7 @@ function draw() {
   }
 
   //map vol to instensity (0.2 min, up to 1.0); mult by 3 to make sensitive
-  let intensity = constrain(volume * 5, 0.2, 1.0);
+  let intensity = constrain(volume * 8, 0.6, 1.0);
 
 //update perlin noise offset
   noiseOffset += moodSongs[currentMood].speed;
@@ -164,7 +171,7 @@ function draw() {
   noStroke();
   textAlign(LEFT, TOP);
   textSize(12);
-  text("TESTING", 10, 20);
+  text(moodSongs[currentMood].displayName, 10, 20);
 }
 
 //AUDIO FUNCTIONALITY
@@ -268,6 +275,95 @@ function createButtons() {
     
     playPauseBtn.mousePressed(togglePlayPause);
 }
+
+function createVolumeControl() {
+  let volumeContainer = createDiv("");
+  volumeContainer.style("position", "fixed");
+  volumeContainer.style("bottom", "20px");
+  volumeContainer.style("left", "20px");
+  volumeContainer.style("background", "rgba(0,0,0,0.7)");
+  volumeContainer.style("padding", "8px 15px");
+  volumeContainer.style("border-radius", "20px");
+  volumeContainer.style("z-index", "100");
+  volumeContainer.style("display", "flex");
+  volumeContainer.style("align-items", "center");
+  volumeContainer.style("gap", "10px");
+  volumeContainer.style("border", "1px solid rgba(0, 255, 136, 0.3)");
+
+  let volLabel = createSpan("VOL");
+  volLabel.parent(volumeContainer);
+  volLabel.style("color", "#00ff88");
+  volLabel.style("font-size", "11px");
+  volLabel.style("font-family", "monospace");
+  volLabel.style("font-weight", "bold");
+  volLabel.style("letter-spacing", "1px");
+
+  volumeSlider = createSlider(0, 100, 70);
+  volumeSlider.parent(volumeContainer);
+  volumeSlider.style("width", "90px");
+  volumeSlider.style("background", "#1a1a2a");
+
+  //slider thumb
+  volumeSlider.style("accent-color", "#00ff88");
+
+  volumeSlider.input(function () {
+    if (currentSong) {
+      let vol = volumeSlider.value() / 100;
+      currentSong.setVolume(vol);
+    }
+  });
+}
+
+function createTrackControl() {
+  let trackContainer = createDiv("");
+  trackContainer.style("position", "fixed");
+  trackContainer.style("bottom", "20px");
+  trackContainer.style("right", "20px");
+  trackContainer.style("background", "rgba(0,0,0,0.7)");
+  trackContainer.style("padding", "8px 15px");
+  trackContainer.style("border-radius", "20px");
+  trackContainer.style("z-index", "100");
+  trackContainer.style("display", "flex");
+  trackContainer.style("align-items", "center");
+  trackContainer.style("gap", "10px");
+  trackContainer.style("border", "1px solid rgba(0, 255, 136, 0.3)");
+
+  // 
+  let trackLabel = createSpan("TIME");
+  trackLabel.parent(trackContainer);
+  trackLabel.style("color", "#00ff88");
+  trackLabel.style("font-size", "11px");
+  trackLabel.style("font-family", "monospace");
+  trackLabel.style("font-weight", "bold");
+  trackLabel.style("letter-spacing", "1px");
+
+  trackSlider = createSlider(0, 100, 0);
+  trackSlider.parent(trackContainer);
+  trackSlider.style("width", "130px");
+  trackSlider.style("accent-color", "#00ff88");
+
+  let timeDisplay = createSpan("0:00 / 0:00");
+  timeDisplay.parent(trackContainer);
+  timeDisplay.style("color", "#00ff88");
+  timeDisplay.style("font-size", "10px");
+  timeDisplay.style("font-family", "monospace");
+  timeDisplay.style("letter-spacing", "1px");
+
+  window.timeDisplay = timeDisplay;
+
+  trackSlider.input(function () {
+    if (currentSong && currentSong.isLoaded()) {
+      trackSliderUpdating = true;
+      let duration = currentSong.duration();
+      let newTime = (trackSlider.value() / 100) * duration;
+      currentSong.jump(newTime);
+      trackSliderUpdating = false;
+    }
+  });
+}
+
+
+
 
 //responsive canvas
 function windowResized() {
