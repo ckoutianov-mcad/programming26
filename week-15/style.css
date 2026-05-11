@@ -99,8 +99,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-
-/* responsive - for smaller screens */
+/* responsiveness - for smaller screens */
 @media (max-width: 600px) {
     body {
         padding: 10px;

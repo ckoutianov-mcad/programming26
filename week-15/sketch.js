@@ -429,7 +429,7 @@ function createTrackControl() {
   });
 }
 
-//responsive canvas
+//responsiveness: canvas
 function windowResized() {
     let container = select('#visualizerScreen');
     let newWidth = min(windowWidth * 0.8, 1000);
