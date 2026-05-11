@@ -1,28 +1,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mood Visualizer</title>
-    <!--Winamp Container Style CSS-->
+    <!--Mood Visualizer Container  CSS-->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="winamp-container">
-        <!-- title bar -->
-        <div class="winamp-titlebar">
-            <div class="winamp-title-icon"></div>
-            <span class="winamp-title-text"> MOOD VISUALIZER</span>
-            <div style="width: 20px;"></div>
-        </div>
+    <!-- title bar -->
+    <div class="winamp-titlebar">
+        <div class="winamp-title-icon"></div>
+        <span class="winamp-title-text"> MOOD VISUALIZER</span>
+        <div style="width: 24px;"></div>
+    </div>
         
-
     <!-- visualizer screen -->
-     <div class="winamp-statusbar" id="visualizerScreen"></div>
+     <div class="winamp-screen" id="visualizerScreen"></div>
 
     <!-- bottom status bar -->
      <div class="winamp-statusbar">
-        <span class="winamp-status-text" id="nowPlayingText">READY</span>
+        <span class="winamp-status-text" id="nowPlayingText"></span>
         <span class="winamp-status-text">PERLIN NOISE v1</span>
         </div>
      </div>
@@ -32,7 +30,7 @@
     <!--p5.js sound library-->
      <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/addons/p5.sound.min.js"></script>
 
-     <!--Mood Visualizer sketch-->
+     <!--Mood Visualizer Sketch-->
     <script src="sketch.js"></script>
 </body>
 </html>
