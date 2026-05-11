@@ -39,16 +39,13 @@ const moodSongs = {
 //line array
 let lines = [];
 let numLines = 30;
-
 //audio
 let currentSong = null;
 let amp = null;
 let isPlaying = false;
 let currentMood = "neutral";
-
 //perlin noise offset
 let noiseOffset = 0;
-
 //user interaction
 let playPauseBtn = null;
 let volumeSlider = null;
@@ -61,6 +58,12 @@ function setup () {
     let canvas = createCanvas(windowWidth * 0.8, 400);
     canvas.parent('visualizerScreen');
     colorMode(HSB, 360, 100, 100, 1);
+
+    //initial message for user
+    let statusSpan = select('#nowPlayingText');
+    if (statusSpan) {
+        statusSpan.html("CLICK A MOOD BUTTON");
+    }
 
     //audio
     amp = new p5.Amplitude();
@@ -80,7 +83,7 @@ function setup () {
         });
     } 
     noFill();
-    console.log("Mood Visualizer ready. Click a buttont to start");
+    console.log("Mood Visualizer ready. Click a button to start");
 }
 
 //perlin noise lines
@@ -271,6 +274,7 @@ function createButtons() {
     menu.style('z-index', '100');
     menu.style('flex-wrap', 'wrap'); //button wrap
     menu.style('padding', '10px');
+    menu.style('pointer-events', 'auto')
     
     let moods = ['sad', 'neutral', 'happy'];
     
@@ -282,6 +286,17 @@ function createButtons() {
         let btnText = moodData.name + "\n" + moodData.composer;//new line
         let btn = createButton(btnText);
         btn.parent(menu);
+
+        //accessiblity: tooltip for mouse hover
+        let tooltipText = `Play ${moodData.displayName} by ${moodData.composer}`;
+        btn.attribute('title', tooltipText);
+
+        //accessibitly: screen reader
+        let screenReaderText = `${moodData.name} mood, ${moodData.displayName} by ${moodData.composer}`;
+        btn.attribute('aria-label', screenReaderText);
+        
+
+        //button styling
         btn.style('padding', '10px 18px');
         btn.style('border-radius', '10px');
         btn.style('border', 'none');
@@ -291,19 +306,30 @@ function createButtons() {
         btn.style('color', 'white');
         btn.style('line-height', '1.3');
         btn.style('white-space', 'pre-line');
+
         
-        // Button colors
+        //button colors
         if (mood === 'sad') btn.style('background', '#2752b0');
         else if (mood === 'neutral') btn.style('background', '#246338');
         else btn.style('background', '#bf9b39');
         
+        //button action
         btn.mousePressed(function() {
             loadAndPlayMood(mood);
         });
     }
     
+    //play/pause button
     playPauseBtn = createButton('Pause');
     playPauseBtn.parent(menu);
+
+    //tooltip for play/pause
+    playPauseBtn.attribute('title', 'Play or pause the current song');
+
+    //screen reader label
+    playPauseBtn.attribute('aria-label', 'Play or pause music playback');
+
+    //styling
     playPauseBtn.style('padding', '10px 24px');
     playPauseBtn.style('border-radius', '10px');
     playPauseBtn.style('border', 'none');
@@ -312,6 +338,7 @@ function createButtons() {
     playPauseBtn.style('cursor', 'pointer');
     playPauseBtn.style('font-size', '14px');
     playPauseBtn.style('font-weight', 'bold');
+    
     
     playPauseBtn.mousePressed(togglePlayPause);
 }
@@ -407,6 +434,11 @@ function windowResized() {
     let container = select('#visualizerScreen');
     let newWidth = min(windowWidth * 0.8, 1000);
     resizeCanvas(newWidth, 400);
+
+    let statusSpan = select('#nowPlayingText');
+    if(statusSpan) {
+        statusSpan.attribute('aria-label', 'Window resized, visualizer adjusted');
+    }
 }
 
 
