@@ -294,7 +294,6 @@ function createButtons() {
         //accessibitly: screen reader
         let screenReaderText = `${moodData.name} mood, ${moodData.displayName} by ${moodData.composer}`;
         btn.attribute('aria-label', screenReaderText);
-        
 
         //button styling
         btn.style('padding', '10px 18px');

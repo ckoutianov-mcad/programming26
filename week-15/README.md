@@ -14,4 +14,27 @@ Three moods:
 - Happy: fast, energentic yellow waves accompanied by Bach's Air
 
 Audio reactions:
-Uses p5.Amplitude
+Uses p5.Amplitude to map music volume to display wave height and line brightness.
+
+Custom Winamp-inspiration interface:
+Retro title bar, status display and color palette.
+
+Accessibility:
+Screen reader labels (aria-label) and hover tooltips (title).
+
+## p5.js Techniques
+
+Audio Analysis (sound)
+- loadSound() : loads audio files in the background.
+- p5.Amplitude & getLevel(): gets current volume to create the visuals.
+- userStart Audio(): releases audio after user clicks on botton.
+
+Generative Visuals (js)
+- Perlin Noise - noise(): Creates wave movements for each lines.
+- HSB color mode - colorMode(HBS): make it wasy to shift colors by changing a single hue value.
+- map() : converts volume into a visual intensity to scale wave amplitude.
+
+User Interface (dom)
+- createSlider(): used for colume and track control
+- createButton() and createDiv(): create mood buttons and interface panels.
+- CSS styling - .style(): displays styling for buttons directly in file.
